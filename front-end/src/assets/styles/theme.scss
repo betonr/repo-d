@@ -1,0 +1,22 @@
+@import '~@angular/material/theming';
+
+:root {
+  --primary: #009999;
+  --mainGreen: #00C4B4;
+  --mainGreenLogo: #4DDF7C;
+  --blueLight: #2196F3;
+}
+
+$theme-primary: mat-palette($mat-blue);
+$theme-accent : mat-palette($mat-green);
+$theme-warn   : mat-palette($mat-red);
+
+$theme: mat-light-theme(
+  $theme-primary,
+  $theme-accent,
+  $theme-warn
+);
+
+$theme-typography: mat-typography-config(
+  $font-family: 'Roboto'
+);

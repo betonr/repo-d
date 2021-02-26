@@ -1,0 +1,32 @@
+<!-- header -->
+<mat-toolbar class="header">
+  <div class="logo">
+    <img />
+  </div>
+
+  <span class="title">{{ title }}</span>
+
+  <button mat-mini-fab color="gray">
+    <img [src]="getGravatar()" width="100%" onerror="this.onerror=null; this.src='assets/image/person.jpg'" />
+  </button>
+</mat-toolbar>
+
+<!-- page content -->
+<router-outlet></router-outlet>
+
+<!-- footer -->
+<footer class="footer">
+  <span class="title">
+    RepoD - v{{ getVersionApp() }}
+  </span>
+  
+  <div class="links">
+    <span>
+      <a href="https://hub.docker.com/r/betonoronha/repo-d" target="_blank">DockerHub</a>
+    </span>
+  
+    <span>
+      <a href="https://github.com/betonr/repo-d" target="_blank">GitHub</a>
+    </span>
+  </div>
+</footer>
