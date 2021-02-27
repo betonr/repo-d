@@ -1,25 +1,21 @@
-from .utils.helpers import createTree
-from .services import Services
 from .models import User
+from .services import Services
+from .utils.helpers import create_tree
+from .utils.session import generate_token
 
-def login(db, username: str, password: str):
-    service = Services(db)
+
+def login(username: str, password: str):
+    service = Services()
 
     token = service.login(username, password)
 
-    if token:
-        users = db.query(User).filter().all()
-        if not len(users):
-            db.add(User(
-                username=username,
-                password=password
-            ))
-            db.commit()
+    if bool(token):
+        return generate_token(dict(username=username, password=password))
 
-    return bool(token)
+    return False
 
-def list_repositories(db):
-    service = Services(db)
+def list_repositories(user):
+    service = Services(user)
     
     repositories = service.list_repositories()['repositories']
     
@@ -33,23 +29,23 @@ def list_repositories(db):
         else:
             folders.append(repo.split('/'))
 
-    result = dict(**result, **createTree(folders))
+    result = dict(**result, **create_tree(folders))
     return result
 
 
-def list_tags(db, image_name):
-    service = Services(db)
+def list_tags(user, image_name):
+    service = Services(user)
     
     return service.list_tags(image_name)
 
 
-def describe_image(db, image_name, tag):
-    service = Services(db)
+def describe_image(user, image_name, tag):
+    service = Services(user)
     
     return service.describe_image(image_name, tag)
 
 
-def delete_image(db, image_name, tag):
-    service = Services(db)
+def delete_image(user, image_name, tag):
+    service = Services(user)
     
     return service.delete_image(image_name, tag)

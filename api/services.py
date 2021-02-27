@@ -5,26 +5,22 @@ from itsdangerous import URLSafeSerializer
 from requests.auth import HTTPBasicAuth
 
 from .models import User
+from .utils.session import get_current_user
 
 class Services:
 
-    def __init__(self, db):
-        self._db = db
+    def __init__(self, user=None):
+        self._user = user
         
 
     def login(self, username=None, password=None, scope='registry:catalog:*'):
-        url_base = 'https://oauth.dpi.inpe.br/api/oauth/auth/token'
-        # url_base = 'http://localhost:5001/oauth/token'
+        url_base = 'http://localhost:5001/oauth/token'
 
         query = f'?service=registry&scope={scope}'
 
         if not username and not password:
-            users = self._db.query(User).filter().all()
-            if not len(users):
-                return False
-            
-            username = users[0].username
-            password = users[0].password
+            username = self._user[0]
+            password = self._user[1]
 
         r = requests.get(f'{url_base}{query}', auth=HTTPBasicAuth(username, password))
         if r.status_code >= 400:

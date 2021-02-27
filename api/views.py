@@ -1,21 +1,24 @@
 import json
 from os.path import isfile
 from datetime import date
-from fastapi import Depends, Response
-from mimetypes import guess_type
+
+from fastapi import HTTPException, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.responses import JSONResponse
+
 from sqlalchemy.orm import Session
+from mimetypes import guess_type
 
 from . import app, get_db
 from .controller import login, list_repositories, list_tags, describe_image, delete_image
+from .utils.session import get_current_user
 
 security = HTTPBasic()
 
 
 @app.get("/{filename}")
 async def get_site(filename):
-    filename = '/media/beto/DATA7/apps/github/docker-registry-ui/front-end/dist/front-end/' + filename
+    filename = '/media/beto/DATA7/apps/github/repo-d/front-end/dist/front-end/' + filename
 
     if not isfile(filename):
         return Response(status_code=404)
@@ -47,32 +50,48 @@ def system_info():
 
 
 @app.post("/api/login/")
-def login_route(c: HTTPBasicCredentials = Depends(security), db: Session = Depends(get_db)):
-    return login(db, c.username, c.password)
+def login_route(response: Response, c: HTTPBasicCredentials = Depends(security)):
+    session_token = login(c.username, c.password)
+
+    if not session_token:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid user or password"
+        )
+
+    response.set_cookie("session", session_token)
+    
+    return {"detail": "Login Successfully!"}
+
+
+@app.post("/api/logout/")
+def logout_route(response: Response):
+    response.delete_cookie("session")
+    
+    return {"detail": "Logout Successfully!"}
 
 
 @app.get("/api/list_repositories")
-def list_repositories_route(db: Session = Depends(get_db)):
-    return list_repositories(db)
+def list_repositories_route(user: str = Depends(get_current_user)):
+    return list_repositories(user)
 
 
 @app.get("/api/image/list_tags")
-def list_tags_route(image_name: str, db: Session = Depends(get_db)):
-    response, status_code = list_tags(db, image_name)
+def list_tags_route(image_name: str, user: str = Depends(get_current_user)):
+    response, status_code = list_tags(user, image_name)
     
     return JSONResponse(response, status_code=status_code)
 
 
 @app.get("/api/image")
-def describe_image_route(image_name: str, tag: str, db: Session = Depends(get_db)):
-    response, status_code = describe_image(db, image_name, tag)
+def describe_image_route(image_name: str, tag: str, user: str = Depends(get_current_user)):
+    response, status_code = describe_image(user, image_name, tag)
     
     return JSONResponse(response, status_code=status_code)
 
 
 @app.delete("/api/image")
-def delete_image_route(image_name: str, tag: str, db: Session = Depends(get_db)):
-    response, status_code = delete_image(db, image_name, tag)
+def delete_image_route(image_name: str, tag: str, user: str = Depends(get_current_user)):
+    response, status_code = delete_image(user, image_name, tag)
     
     return JSONResponse(response, status_code=status_code)
 

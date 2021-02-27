@@ -1,4 +1,4 @@
-def createTree(array: [list]): 
+def create_tree(array: [list]): 
     tree = {} 
     for item in array: 
         currTree = tree 
