@@ -1,0 +1,20 @@
+<section class="login_page">
+    <div class="container">
+        <img src="assets/image/person.jpg" />
+        <h1>Sign In</h1>
+
+        <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline">
+                <mat-icon matPrefix>account_circle</mat-icon>
+                <input matInput type="email" placeholder="Username" formControlName="username" required>
+            </mat-form-field>  
+
+            <mat-form-field appearance="outline">
+                <mat-icon matPrefix>lock</mat-icon>
+                <input matInput type="password" placeholder="Password" formControlName="password" required>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit">LOGIN</button>
+        </form>
+    </div> 
+</section>

@@ -6,13 +6,19 @@
 
   <span class="title">{{ title }}</span>
 
-  <button mat-mini-fab color="gray">
+  <button mat-mini-fab color="gray" *ngIf="logged">
     <img [src]="getGravatar()" width="100%" onerror="this.onerror=null; this.src='assets/image/person.jpg'" />
+  </button>
+
+  <button mat-stroked-button *ngIf="!logged" style="color: #FFF !important" (click)="toLogin()">
+    LOGIN
   </button>
 </mat-toolbar>
 
 <!-- page content -->
-<router-outlet></router-outlet>
+<section class="content">
+  <router-outlet></router-outlet>
+</section>
 
 <!-- footer -->
 <footer class="footer">

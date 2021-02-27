@@ -10,9 +10,9 @@ def login(username: str, password: str):
     token = service.login(username, password)
 
     if bool(token):
-        return generate_token(dict(username=username, password=password))
+        return generate_token(dict(username=username, password=password)), username
 
-    return False
+    return False, None
 
 def list_repositories(user):
     service = Services(user)

@@ -52,7 +52,7 @@ def system_info():
 
 @app.post("/api/login/")
 def login_route(response: Response, c: HTTPBasicCredentials = Depends(security)):
-    session_token = login(c.username, c.password)
+    session_token, username = login(c.username, c.password)
 
     if not session_token:
         raise HTTPException(
@@ -61,7 +61,7 @@ def login_route(response: Response, c: HTTPBasicCredentials = Depends(security))
 
     response.set_cookie("session", session_token)
     
-    return {"detail": "Login Successfully!"}
+    return {"detail": "Login Successfully!", "username": username}
 
 
 @app.post("/api/logout/")

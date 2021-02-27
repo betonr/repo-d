@@ -12,15 +12,10 @@ export class AuthService {
   }
 
   /** Login Docker Registry */
-  async login(credentials) {
-    try {
-      const { data } = await api.get(`http://localhost:8000/api/login`, {
-        auth: credentials
-      })
-      if (data) {
-        return data
-      }
-    } catch (_) { }
+  login(credentials) {
+    return api.post(`/api/login/`, {}, {
+      auth: credentials
+    })
   }
 
 }

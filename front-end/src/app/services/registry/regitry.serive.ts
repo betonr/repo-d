@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import api from "../main";
 
 @Injectable()
-export class SystemService {
+export class RegistryService {
 
   /**
    * Constructor to get infos by store application
@@ -11,10 +11,10 @@ export class SystemService {
   constructor() {
   }
 
-  /** Login Docker Registry */
-  async getSystemInfo() {
+  /** list repositories of Docker Registry */
+  async getRepositories() {
     try {
-      const { data } = await api.get(`/api/system`);
+      const { data } = await api.get(`/api/list_repositories`);
       if (data) {
         return data
       }
