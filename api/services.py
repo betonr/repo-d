@@ -4,6 +4,7 @@ from itsdangerous import URLSafeSerializer
 
 from requests.auth import HTTPBasicAuth
 
+from .config import config
 from .models import User
 from .utils.session import get_current_user
 
@@ -14,7 +15,7 @@ class Services:
         
 
     def login(self, username=None, password=None, scope='registry:catalog:*'):
-        url_base = 'http://localhost:5001/oauth/token'
+        url_base = config.OAUTH_URL
 
         query = f'?service=registry&scope={scope}'
 
@@ -30,7 +31,7 @@ class Services:
 
 
     def list_repositories(self,):
-        url = 'https://registry.dpi.inpe.br/v2/_catalog'
+        url = f'{config.REGISTRY_URL}/_catalog'
 
         token = self.login()
         if not token:
@@ -44,14 +45,13 @@ class Services:
 
     
     def list_tags(self, image_name):
-        url = 'https://registry.dpi.inpe.br/v2/'
         suffix = f'{image_name}/tags/list'
 
-        token = self.login(scope=f'repository:{image_name}:*')
+        token = self.login(scope=f'repository:{image_name}:pull')
         if not token:
             return False, 403
 
-        r = requests.get(f'{url}/{suffix}', headers={'Authorization': f'Bearer {token}'})
+        r = requests.get(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
         if r.status_code >= 400:
             return False, 404
 
@@ -59,14 +59,13 @@ class Services:
 
 
     def describe_image(self, image_name, tag):
-        url = 'https://registry.dpi.inpe.br/v2/'
         suffix = f'{image_name}/manifests/{tag}'
 
-        token = self.login(scope=f'repository:{image_name}:*')
+        token = self.login(scope=f'repository:{image_name}:pull')
         if not token:
             return False, 403
 
-        r = requests.get(f'{url}/{suffix}', headers={'Authorization': f'Bearer {token}'})
+        r = requests.get(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
         if r.status_code >= 400:
             return False, 404
 
@@ -74,14 +73,13 @@ class Services:
 
 
     def delete_image(self, image_name, tag):
-        url = 'https://registry.dpi.inpe.br/v2/'
         suffix = f'{image_name}/manifests/{tag}'
 
-        token = self.login(scope=f'repository:{image_name}:*')
+        token = self.login(scope=f'repository:{image_name}:push,pull')
         if not token:
             return False, 403
 
-        r = requests.delete(f'{url}/{suffix}', headers={'Authorization': f'Bearer {token}'})
+        r = requests.delete(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
         if r.status_code >= 400:
             return False, 404
 

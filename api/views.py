@@ -9,7 +9,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from mimetypes import guess_type
 
-from . import app, get_db
+from . import app
+from .config import settings, config
 from .controller import login, list_repositories, list_tags, describe_image, delete_image
 from .utils.session import get_current_user
 
@@ -18,7 +19,7 @@ security = HTTPBasic()
 
 @app.get("/{filename}")
 async def get_site(filename):
-    filename = '/media/beto/DATA7/apps/github/repo-d/front-end/dist/front-end/' + filename
+    filename = config.FRONT_FOLDER_DIST + filename
 
     if not isfile(filename):
         return Response(status_code=404)
@@ -37,15 +38,15 @@ async def get_site_default_filename():
 
 @app.get("/api/")
 def status():
-    return {"message": "API Running"}
+    return {"message": f"{settings.app_name} - API Running"}
 
 
 @app.get("/api/system")
 def system_info():
     return {
-        "title": "Docker Registry UI",
-        "registry_url": "http://localhost:5001",
-        "enable_remove_images": False
+        "title": config.FRONT_APP_NAME,
+        "registry_url": config.REGISTRY_URL,
+        "enable_remove_images": config.API_ENABLE_DELETE_IMG
     }
 
 
@@ -55,7 +56,7 @@ def login_route(response: Response, c: HTTPBasicCredentials = Depends(security))
 
     if not session_token:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid user or password"
+            status_code=403, detail="Invalid user or password"
         )
 
     response.set_cookie("session", session_token)
@@ -91,6 +92,11 @@ def describe_image_route(image_name: str, tag: str, user: str = Depends(get_curr
 
 @app.delete("/api/image")
 def delete_image_route(image_name: str, tag: str, user: str = Depends(get_current_user)):
+    if not config.API_ENABLE_DELETE_IMG:
+        raise HTTPException(
+            status_code=401, detail="This application is not allowed to delete images"
+        )
+
     response, status_code = delete_image(user, image_name, tag)
     
     return JSONResponse(response, status_code=status_code)
