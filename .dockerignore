@@ -10,7 +10,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -106,3 +105,7 @@ htmlcov
 
 .git
 docs/build
+
+front-end/src
+front-end/node_modules
+front-end/e2e

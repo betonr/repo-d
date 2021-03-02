@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  repo-d:
+    image: betonoronha/repo-d:latest
+    container_name: repo-d
+    restart: "always"
+    ports:
+      - "80:80"
+    environment:
+      - API_SECRET_KEY=YourSecret
+      - API_ENABLE_DELETE_IMG=false
+      - REGISTRY_URL=https://localhost:5000
+      - OAUTH_URL=https://localhost:5000/token
+      - FRONT_APP_NAME=Docker Registry UI
