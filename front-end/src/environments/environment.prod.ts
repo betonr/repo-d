@@ -5,5 +5,6 @@ export const environment = {
   /** app version on package */
   appVersion: `${require('../../package.json').version}`,
   /** environment */
-  production: true
+  production: true,
+  apiBasePath: ''
 };

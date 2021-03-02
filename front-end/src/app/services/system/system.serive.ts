@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import api from "../main";
 
 @Injectable()
@@ -13,7 +14,7 @@ export class SystemService {
 
   /** Login Docker Registry */
   async getSystemInfo() {
-    const { data } = await api.get(`http://localhost:8000/api/system`);
+    const { data } = await api.get(`${environment['apiBasePath']}/api/system`);
     return data
   }
 

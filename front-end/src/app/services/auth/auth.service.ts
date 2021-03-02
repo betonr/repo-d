@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import api from "../main";
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AuthService {
 
   /** Login Docker Registry */
   login(credentials) {
-    return api.post(`http://localhost:8000/api/login/`, {}, {
+    return api.post(`${environment['apiBasePath']}/api/login/`, {}, {
       auth: credentials
     })
   }
