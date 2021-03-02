@@ -31,8 +31,8 @@ export class RepositoriesComponent implements OnInit {
       this.app.dispatch(showLoading());
 
       const response = await this.rs.getRepositories();
-      this.fullImages = response;
-      this.repositories = Object.keys(response);
+      this.fullImages = response.data;
+      this.repositories = Object.keys(response.data);
       
     } catch(_) {
       this._snackBar.open('Not found images with your permission', '', {

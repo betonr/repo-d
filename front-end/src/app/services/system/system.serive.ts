@@ -13,9 +13,8 @@ export class SystemService {
   }
 
   /** Login Docker Registry */
-  async getSystemInfo() {
-    const { data } = await api.get(`${environment['apiBasePath']}/api/system`);
-    return data
+  getSystemInfo() {
+    return api.get(`${environment['apiBasePath']}/api/system`);
   }
 
 }

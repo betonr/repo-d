@@ -58,9 +58,9 @@ export class AppComponent implements OnInit {
   async getSystemInfo() {
     try {
       const response = await this.systemService.getSystemInfo();
-      this.title = response.title;
+      this.title = response.data.title;
       
-      this.app.dispatch(setInfosApp(response));
+      this.app.dispatch(setInfosApp(response.data));
 
     } catch(_) {}
   }

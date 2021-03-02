@@ -13,35 +13,31 @@ export class RegistryService {
   }
 
   /** list repositories of Docker Registry */
-  async getRepositories() {
-    const { data } = await api.get(`${environment['apiBasePath']}/api/list_repositories`);
-    return data;
+  getRepositories() {
+    return api.get(`${environment['apiBasePath']}/api/list_repositories`);
   }
 
   /** list image tags of Docker Registry */
-  async getTags(imageName) {
-    const { data } = await api.get(`${environment['apiBasePath']}/api/image/list_tags`, { params: {
+  getTags(imageName) {
+    return api.get(`${environment['apiBasePath']}/api/image/list_tags`, { params: {
       image_name: imageName
     }});
-    return data;
   }
 
   /** list images manifest of Docker Registry */
-  async getImageManifest(imageName, tag) {
-    const { data } = await api.get(`${environment['apiBasePath']}/api/image`, { params: {
+  getImageManifest(imageName, tag) {
+    return api.get(`${environment['apiBasePath']}/api/image`, { params: {
       image_name: imageName,
       tag: tag
     }});
-    return data;
   }
 
   /** delete image of Docker Registry */
-  async deleteImage(imageName, tag) {
-    const { data } = await api.delete(`${environment['apiBasePath']}/api/image`, { params: {
+  deleteImage(imageName, tag) {
+    return api.delete(`${environment['apiBasePath']}/api/image`, { params: {
       image_name: imageName,
       tag: tag
     }});
-    return data;
   }
 
 }
