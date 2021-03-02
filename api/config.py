@@ -7,7 +7,7 @@ class Settings(BaseSettings):
 
     class Config:
         API_SECRET_KEY = os.getenv('API_SECRET_KEY', '')
-        API_ENABLE_DELETE_IMG = bool(os.getenv('API_ENABLE_DELETE_IMG', 'False'))
+        API_ENABLE_DELETE_IMG = os.getenv('API_ENABLE_DELETE_IMG', 'false').lower() == 'true'
         
         REGISTRY_URL = os.getenv('REGISTRY_URL', 'http://localhost:5000/v2')
         OAUTH_URL = os.getenv('OAUTH_URL', 'http://localhost:5001')

@@ -53,7 +53,7 @@ class Services:
 
         r = requests.get(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
         if r.status_code >= 400:
-            return False, 404
+            return False, r.status_code
 
         return r.json(), 200
 
@@ -61,13 +61,13 @@ class Services:
     def describe_image(self, image_name, tag):
         suffix = f'{image_name}/manifests/{tag}'
 
-        token = self.login(scope=f'repository:{image_name}:pull')
+        token = self.login(scope=f'repository:{image_name}:*')
         if not token:
             return False, 403
 
         r = requests.get(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
         if r.status_code >= 400:
-            return False, 404
+            return False, r.status_code
 
         return r.json(), 200
 
@@ -75,12 +75,24 @@ class Services:
     def delete_image(self, image_name, tag):
         suffix = f'{image_name}/manifests/{tag}'
 
-        token = self.login(scope=f'repository:{image_name}:push,pull')
+        token = self.login(scope=f'repository:{image_name}:*')
         if not token:
             return False, 403
 
-        r = requests.delete(f'{config.REGISTRY_URL}/{suffix}', headers={'Authorization': f'Bearer {token}'})
+        r = requests.get(f'{config.REGISTRY_URL}/{suffix}', headers={
+            'Authorization': f'Bearer {token}',
+            'Accept': 'application/vnd.docker.distribution.manifest.v2+json'
+        })
         if r.status_code >= 400:
-            return False, 404
+            return False, r.status_code
+
+        digest = r.json()['config']['digest']
+        r = requests.delete(f'{config.REGISTRY_URL}/{suffix.replace(tag, digest)}', headers={
+            'Authorization': f'Bearer {token}',
+            'Accept': 'application/vnd.docker.distribution.manifest.v2+json'
+        })
+
+        if r.status_code == 405:
+            return {"detail": "Your registration server does not have permission to delete the image. Use 'REGISTRY_STORAGE_DELETE_ENABLED'"}, 403
 
         return r.json(), 200
