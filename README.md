@@ -14,6 +14,8 @@ Web Interface created with FastAPI and Angular to list images from the docker re
 3. List Tags by Images
 4. Delete Image (if you want)
 
+![Home page](./static/home.png "Home Page - List Images")
+
 
 ### **Install for development**
 
