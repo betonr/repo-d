@@ -13,12 +13,8 @@ export class SystemService {
 
   /** Login Docker Registry */
   async getSystemInfo() {
-    try {
-      const { data } = await api.get(`/api/system`);
-      if (data) {
-        return data
-      }
-    } catch (_) { }
+    const { data } = await api.get(`http://localhost:8000/api/system`);
+    return data
   }
 
 }

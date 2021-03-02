@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
+import { closeLoading, showLoading } from 'src/app/app.action';
+import { AppState } from 'src/app/app.state';
 import { RegistryService } from 'src/app/services/registry/regitry.serive';
 
 @Component({
@@ -8,7 +12,14 @@ import { RegistryService } from 'src/app/services/registry/regitry.serive';
 })
 export class RepositoriesComponent implements OnInit {
 
-  constructor(private rs: RegistryService){
+  fullImages = {}
+
+  repositories = []
+
+  constructor(
+    private rs: RegistryService, 
+    private _snackBar: MatSnackBar,
+    private app: Store<AppState>){
   }
 
   ngOnInit() {
@@ -17,12 +28,48 @@ export class RepositoriesComponent implements OnInit {
 
   async getRepositories() {
     try {
+      this.app.dispatch(showLoading());
+
       const response = await this.rs.getRepositories();
-      console.log(response)
+      this.fullImages = response;
+      this.repositories = Object.keys(response);
       
-    } catch(err) {
-      console.log(err)
+    } catch(_) {
+      this._snackBar.open('Not found images with your permission', '', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
+    } finally {
+      this.app.dispatch(closeLoading());
     }
+  }
+
+  getImages(r) {
+    return Object.entries(this.fullImages[r])
+  }
+
+  isFolder(obj) {
+    return Object.values(obj[1]).length
+  }
+
+  getFullImages(r, value="") {
+    const results = []
+
+    for (let a in r) {
+      if (Object.values(r[a]).length) {
+        return this.getFullImages(r[a], value+'/'+a)
+      } else {
+        results.push(value+'/'+a)
+      }
+    }
+
+    return results
+  }
+
+  getNameImage(folder, subName) {
+    return `${folder != 'root' ? folder + '/' : ''}${subName}`
   }
 
 }

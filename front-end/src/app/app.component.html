@@ -1,14 +1,24 @@
 <!-- header -->
 <mat-toolbar class="header">
   <div class="logo">
-    <img />
+    <img src="assets/image/repod-white.png" (click)="goToHome()" style="cursor: pointer;" />
   </div>
 
   <span class="title">{{ title }}</span>
 
-  <button mat-mini-fab color="gray" *ngIf="logged">
+  <button mat-mini-fab color="gray" *ngIf="logged" [matMenuTriggerFor]="menu">
     <img [src]="getGravatar()" width="100%" onerror="this.onerror=null; this.src='assets/image/person.jpg'" />
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      Hi, <b>{{ email }}</b>!
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon class="menu-icon">power_settings_new</mat-icon>
+      Logout
+    </button>
+  </mat-menu>
 
   <button mat-stroked-button *ngIf="!logged" style="color: #FFF !important" (click)="toLogin()">
     LOGIN
@@ -25,14 +35,16 @@
   <span class="title">
     RepoD - v{{ getVersionApp() }}
   </span>
-  
+
   <div class="links">
     <span>
       <a href="https://hub.docker.com/r/betonoronha/repo-d" target="_blank">DockerHub</a>
     </span>
-  
+
     <span>
       <a href="https://github.com/betonr/repo-d" target="_blank">GitHub</a>
     </span>
   </div>
 </footer>
+
+<app-loading></app-loading>

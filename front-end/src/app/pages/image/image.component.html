@@ -1,0 +1,16 @@
+<section>
+    <div class="tags_page">
+        <h1>
+            <mat-icon>list</mat-icon>
+            Image: <b style="margin-left: 10px">{{ imageName }}</b>
+        </h1>
+        
+        <div class="container_image_tag">
+            <div class="image_tag" *ngFor="let tag of tags">
+                {{ tag }}
+
+                <mat-icon *ngIf="enableDelImgs" color="error" (click)="deleteImage(tag)">delete</mat-icon>
+            </div>
+        </div>
+    </div>
+</section>

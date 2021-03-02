@@ -13,7 +13,7 @@ export class AuthService {
 
   /** Login Docker Registry */
   login(credentials) {
-    return api.post(`/api/login/`, {}, {
+    return api.post(`http://localhost:8000/api/login/`, {}, {
       auth: credentials
     })
   }

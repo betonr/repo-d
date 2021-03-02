@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { setUser } from 'src/app/app.action';
+import { closeLoading, setUser, showLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -34,6 +34,8 @@ export class LoginComponent {
 
   async onSubmit() {
     try {
+      this.app.dispatch(showLoading());
+
       if (this.loginForm.status === 'VALID') {
         const data = this.loginForm.value;
   
@@ -45,14 +47,14 @@ export class LoginComponent {
             duration: 2000,
             horizontalPosition: 'right',
             verticalPosition: 'top',
-            panelClass: ['error-snackbar']
+            panelClass: ['success-snackbar']
           });
 
           this.app.dispatch(setUser({"username": response.data['username']}));
 
           this.router.navigate([""]);
 
-        } throw Error
+        } else throw Error
     
       } else {
         this._snackBar.open('Complete all fields!', '', {
@@ -70,6 +72,8 @@ export class LoginComponent {
         verticalPosition: 'top',
         panelClass: ['error-snackbar']
       });
+    } finally {
+      this.app.dispatch(closeLoading());
     }
   }
 
