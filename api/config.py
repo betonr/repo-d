@@ -12,7 +12,7 @@ class Settings(BaseSettings):
         REGISTRY_URL = os.getenv('REGISTRY_URL', 'http://localhost:5000/v2')
         OAUTH_URL = os.getenv('OAUTH_URL', 'http://localhost:5001')
 
-        FRONT_FOLDER_DIST = os.getenv('FRONT_FOLDER_DIST', '/media/beto/DATA7/apps/github/repo-d/front-end/dist/front-end/')
+        FRONT_FOLDER_DIST = os.getenv('FRONT_FOLDER_DIST', '/repoD/front-end/')
         FRONT_APP_NAME = os.getenv('FRONT_APP_NAME', 'Docker Registry UI')
 
 

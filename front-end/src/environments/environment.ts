@@ -6,5 +6,5 @@ export const environment = {
   appVersion: `${require('../../package.json').version}-dev`,
   /** environment */
   production: false,
-  apiBasePath: 'http://localhost:80000'
+  apiBasePath: 'http://localhost:8000'
 };
