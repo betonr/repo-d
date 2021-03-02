@@ -37,7 +37,7 @@ in development
 2. Running
 
 ```bash
-    docker-compose up -d
+    $ docker-compose up -d
 ```
 
 
