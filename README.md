@@ -26,17 +26,16 @@ Web Interface created with FastAPI and Angular to list images from the docker re
 ### **Deploy**
 
 1. Change environment variables in docker-compose:
-    ```
-        - API_SECRET_KEY = secret word used to encrypt the user's token in the session (e.g. YourS3cret0KEN)
 
-        - API_ENABLE_DELETE_IMG = use to enable delete image function in the interface (default: false)
+    - API_SECRET_KEY = secret word used to encrypt the user's token in the session (e.g. YourS3cret0KEN)
 
-        - REGISTRY_URL = Docker registry URL (e.g. https://localhost:5000)
+    - API_ENABLE_DELETE_IMG = use to enable delete image function in the interface (default: false)
 
-        - OAUTH_URL = OAuth2.0 URL that is integrated with docker registry (e.g. https://localhost:5000/token)
+    - REGISTRY_URL = Docker registry URL (e.g. https://localhost:5000)
 
-        - FRONT_APP_NAME = Name of your docker registry App (default: Docker Registry UI)
-    ```
+    - OAUTH_URL = OAuth2.0 URL that is integrated with docker registry (e.g. https://localhost:5000/token)
+
+    - FRONT_APP_NAME = Name of your docker registry App (default: Docker Registry UI)
 
 2. Running
 
