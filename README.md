@@ -21,8 +21,7 @@ Web Interface created with FastAPI and Angular to list images from the docker re
 
 ### **Install for development**
 
-in development
-
+    TODO
 
 ### **Deploy**
 
