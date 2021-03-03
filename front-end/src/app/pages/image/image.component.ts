@@ -49,7 +49,8 @@ export class ImageComponent implements OnInit {
         const response = await this.rs.getTags(this.imageName);
         this.tags = response.data.tags;
         
-      } catch(_) {
+      } catch(err) {
+        console.log(err)
         this.router.navigate([""]);
         
       } finally {
