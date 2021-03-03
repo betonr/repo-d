@@ -15,8 +15,8 @@ Web Interface created with FastAPI and Angular to list images from the docker re
 4. Delete Image (if you want)
 
 <div>
-    <img src="./static/home.png" width="470">
-    <img src="./static/tags.png" width="470">
+    <img src="./static/home.png" width="50%">
+    <img src="./static/tags.png" width="50%">
 </div>
 
 ### **Install for development**
