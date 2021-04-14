@@ -14,6 +14,8 @@ export class RepositoriesComponent implements OnInit {
 
   fullImages = {}
 
+  listImagesByFolder = {}
+
   repositories = []
 
   constructor(
@@ -33,6 +35,9 @@ export class RepositoriesComponent implements OnInit {
       const response = await this.rs.getRepositories();
       this.fullImages = response.data;
       this.repositories = Object.keys(response.data);
+      Object.keys(response.data).forEach(r => {
+        this.listImagesByFolder[r] = Object.entries(response.data[r]);
+      });
       
     } catch(_) {
       this._snackBar.open('Not found images with your permission', '', {
@@ -44,10 +49,6 @@ export class RepositoriesComponent implements OnInit {
     } finally {
       this.app.dispatch(closeLoading());
     }
-  }
-
-  getImages(r) {
-    return Object.entries(this.fullImages[r])
   }
 
   isFolder(obj) {
@@ -71,5 +72,5 @@ export class RepositoriesComponent implements OnInit {
   getNameImage(folder, subName) {
     return `${folder != 'root' ? folder + '/' : ''}${subName}`
   }
-
+  
 }

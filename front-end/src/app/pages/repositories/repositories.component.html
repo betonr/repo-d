@@ -3,28 +3,25 @@
     </header>
 
     <div class="images_page">
-        <div *ngFor="let r of repositories">
-            <mat-accordion>
-                <mat-expansion-panel style="margin: 5px">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <b>/{{ r !== 'root' ? r : '' }}</b>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-
-                    <div *ngFor="let img of getImages(r)">
-                        <app-image-container *ngIf="!isFolder(img)" [title]="img[0]" [imageName]="getNameImage(r, img[0])"></app-image-container>
-                            
-                        <div *ngIf="isFolder(img)">
-                            <app-image-container *ngFor="let fullImg of getFullImages(this.fullImages[r][img[0]], img[0])" 
-                                                [title]="fullImg"
-                                                [imageName]="getNameImage(r, fullImg)">
-                            </app-image-container>
-                        </div>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let r of repositories" style="margin: 5px">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <b>/{{ r !== 'root' ? r : '' }}</b>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                
+                <div *ngFor="let img of listImagesByFolder[r]">
+                    <app-image-container *ngIf="!isFolder(img)" [title]="img[0]" [imageName]="getNameImage(r, img[0])"></app-image-container>
+                        
+                    <div *ngIf="isFolder(img)">
+                        <app-image-container *ngFor="let fullImg of getFullImages(this.fullImages[r][img[0]], img[0])" 
+                                            [title]="fullImg"
+                                            [imageName]="getNameImage(r, fullImg)">
+                        </app-image-container>
                     </div>
-
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
     </div>
 </section>
