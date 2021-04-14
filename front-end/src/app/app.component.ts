@@ -25,10 +25,10 @@ export class AppComponent implements OnInit {
               private systemService: SystemService,
               private app: Store<AppState>){
     this.app.pipe(select('app'as any)).subscribe(res => {
-      if (res.username) {
+      if (res.username && res.username !== this.email) {
         this.logged = true
         this.email = res.username
-      } else {
+      } else if(!res.username) {
         this.logged = false
       }
 
@@ -70,7 +70,9 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.app.dispatch(logout())
+    this.logged = false;
+    this.email = '';
+    this.app.dispatch(logout());
     this.router.navigate(["login"]);
   }
 

@@ -26,15 +26,17 @@ export class ImageComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private app: Store<AppState>) {
       this.app.pipe(select('app'as any)).subscribe(res => {
-        this.enableDelImgs = res.system.enable_remove_images
+        if (res.system && res.system.enable_remove_images !== undefined) {
+          this.enableDelImgs = res.system.enable_remove_images;
+        }
       });
     }
 
     ngOnInit() {
-      this.route.params.subscribe(params => {
+      this.route.queryParams.subscribe(params => {
         if (params.name) {
           this.imageName = params.name;
-          this.getTags();
+          this.getTags(params.name);
 
         } else {
           this.router.navigate([""]);
@@ -42,19 +44,14 @@ export class ImageComponent implements OnInit {
       });
     }
 
-    async getTags() {
+    async getTags(imageName) {
       try {
-        this.app.dispatch(showLoading());
-
-        const response = await this.rs.getTags(this.imageName);
+        const response = await this.rs.getTags(imageName);
         this.tags = response.data.tags;
         
       } catch(err) {
-        console.log(err)
         this.router.navigate([""]);
         
-      } finally {
-        this.app.dispatch(closeLoading());
       }
     }
 
@@ -64,7 +61,7 @@ export class ImageComponent implements OnInit {
 
         await this.rs.deleteImage(this.imageName, tag);
         
-        this.getTags();
+        this.getTags(this.imageName);
         
         this._snackBar.open('Successfully!', '', {
           duration: 2000,

@@ -15,7 +15,7 @@ export class ImageContainerComponent {
   constructor(private router: Router) {}
 
   goToImg() {
-    this.router.navigate(["image", { name: this.imageName }]);
+    this.router.navigate(["image"], { queryParams: { name: this.imageName }});
   }
 
 }

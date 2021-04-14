@@ -6,9 +6,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RepositoriesComponent } from './pages/repositories/repositories.component';
 
 const routes: Routes = [
-  { path: '',  canActivate: [AppGuardService], component: RepositoriesComponent },
-  { path: 'image',  canActivate: [AppGuardService], component: ImageComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'image',  canActivate: [AppGuardService], component: ImageComponent },
+  { path: '',  canActivate: [AppGuardService], component: RepositoriesComponent },
 ];
 
 @NgModule({

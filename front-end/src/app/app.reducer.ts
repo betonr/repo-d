@@ -13,7 +13,7 @@ const initialState: AppState = {
   username: localStorage.getItem('repoD_username') ? localStorage.getItem('repoD_username') : '',
   system: {
     title: '',
-    enable_delete_image: false,
+    enable_remove_images: false,
     registry_url: ''
   },
   loading: false

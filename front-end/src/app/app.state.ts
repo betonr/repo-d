@@ -1,7 +1,7 @@
 /** State Model - used in App module */
 export interface InfoSystem {
     readonly title: string;
-    readonly enable_delete_image: boolean;
+    readonly enable_remove_images: boolean;
     readonly registry_url: string;
 }
 

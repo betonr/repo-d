@@ -19,15 +19,16 @@ security = HTTPBasic()
 
 @app.get("/{filename}")
 async def get_site(filename):
-    filename = config.FRONT_FOLDER_DIST + filename
+    fullpath = config.FRONT_FOLDER_DIST + filename
 
-    if not isfile(filename):
-        return Response(status_code=404)
+    if not isfile(fullpath):
+        filename = 'index.html'
+        fullpath = config.FRONT_FOLDER_DIST + filename
 
-    with open(filename) as f:
+    with open(fullpath) as f:
         content = f.read()
 
-    content_type, _ = guess_type(filename)
+    content_type, _ = guess_type(fullpath)
     return Response(content, media_type=content_type)
 
 
